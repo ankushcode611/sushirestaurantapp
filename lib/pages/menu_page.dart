@@ -7,6 +7,8 @@ import 'package:sushirestaurnatapp/models/food.dart';
 import 'package:sushirestaurnatapp/themes/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'food_details_page.dart';
+
 class MenuPage extends StatefulWidget {
   const MenuPage({super.key});
 
@@ -19,17 +21,29 @@ class _MenuPageState extends State<MenuPage> {
   List foodMenu = [
     //uramaki sushi
     Food(
-        name: "Uramaki Sshi",
+        name: "Uramaki Sushi",
         price: "21.00",
         imagePath: "lib/images/uramaki_sushi.png",
         rating: "4.9"),
     //tuna sushi
     Food(
-        name: "Tuna Sshi",
+        name: "Tuna Sushi",
         price: "21.00",
         imagePath: "lib/images/tuna_sushi.png",
         rating: "4.3"),
   ];
+
+  //navigate to the items detailed page
+  void navigateToFoodDetails(int index) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => FoodDetailsPage(
+          food: foodMenu[index],
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +154,7 @@ class _MenuPageState extends State<MenuPage> {
               itemCount: foodMenu.length,
               itemBuilder: (context, index) => FoodTile(
                 food: foodMenu[index],
+                onTap: () => navigateToFoodDetails(index),
               ),
             ),
           ),
