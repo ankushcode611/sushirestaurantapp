@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:sushirestaurnatapp/models/shop.dart';
+import 'package:sushirestaurnatapp/pages/cart_page.dart';
 import 'pages/intro_page.dart';
 import 'pages/menu_page.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => Shop(),
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,6 +23,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/intropage': (context) => const IntroPage(),
         '/menupage': (context) => const MenuPage(),
+        '/cartpage': (context) => const CartPage(),
       },
     );
   }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sushirestaurnatapp/components/button,.dart';
 import 'package:sushirestaurnatapp/models/food.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sushirestaurnatapp/themes/colors.dart';
+import '../models/shop.dart';
 
 class FoodDetailsPage extends StatefulWidget {
   final Food food;
@@ -27,12 +29,52 @@ class _FoodDetailsPageState extends State<FoodDetailsPage> {
 //Increment quantity
   void decrementQuantity() {
     setState(() {
-      quantityCount--;
+      if (quantityCount > 0) {
+        quantityCount--;
+      }
+      ;
     });
   }
 
 //Add to cart
-  void addToCart() {}
+  void addToCart() {
+    //Only add to cart if there is something in the cart
+    if (quantityCount > 0) {
+      //get access to shop
+      final shop = context.read<Shop>();
+
+      //add to cart
+      shop.addToCart(widget.food, quantityCount);
+
+      //let the user know that teh action was successful
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => AlertDialog(
+                backgroundColor: primaryColor,
+                content: const Text(
+                  "Successfully added to cart",
+                  style: TextStyle(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+                actions: [
+                  //okay button
+                  IconButton(
+                    onPressed: () {
+                      //poop once to remove dialog box
+                      Navigator.pop(context);
+                      //pop again to go previous screen
+                      Navigator.pop(context);
+                    },
+                    icon: const Icon(
+                      Icons.done,
+                      color: Colors.white,
+                    ),
+                  )
+                ],
+              ));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

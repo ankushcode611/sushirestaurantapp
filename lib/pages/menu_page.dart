@@ -1,12 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:sushirestaurnatapp/components/button,.dart';
 import 'package:sushirestaurnatapp/components/food_tile.dart';
-import 'package:sushirestaurnatapp/models/food.dart';
+
 import 'package:sushirestaurnatapp/themes/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../models/shop.dart';
 import 'food_details_page.dart';
 
 class MenuPage extends StatefulWidget {
@@ -17,24 +19,12 @@ class MenuPage extends StatefulWidget {
 }
 
 class _MenuPageState extends State<MenuPage> {
-// food menu
-  List foodMenu = [
-    //uramaki sushi
-    Food(
-        name: "Uramaki Sushi",
-        price: "21.00",
-        imagePath: "lib/images/uramaki_sushi.png",
-        rating: "4.9"),
-    //tuna sushi
-    Food(
-        name: "Tuna Sushi",
-        price: "21.00",
-        imagePath: "lib/images/tuna_sushi.png",
-        rating: "4.3"),
-  ];
-
   //navigate to the items detailed page
   void navigateToFoodDetails(int index) {
+    //get the shop and It's item menu
+    final shop = context.read<Shop>();
+    final foodMenu = shop.foodMenu;
+
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -47,19 +37,33 @@ class _MenuPageState extends State<MenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    //get the shop and It's item menu
+    final shop = context.read<Shop>();
+    final foodMenu = shop.foodMenu;
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
+        foregroundColor: Colors.grey[800],
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: Icon(
+        leading: const Icon(
           Icons.menu,
-          color: Colors.grey[900],
         ),
-        title: Text(
+        title: const Text(
           'Tokyo',
-          style: TextStyle(color: Colors.grey[900]),
         ),
+        actions: [
+          //cart button
+          IconButton(
+            onPressed: () {
+              Navigator.pushNamed(context, '/cartpage');
+            },
+            icon: Icon(
+              Icons.shopping_cart,
+              color: Colors.grey[900],
+            ),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
